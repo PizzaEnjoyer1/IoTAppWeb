@@ -29,7 +29,7 @@ st.title("MQTT Control")
 
 if st.button('ON'):
     act1="ON"
-    client1= paho.Client("MOTOR_WEB_APP")                           
+    client1= paho.Client("MOTOR_WEB_APP")           #DEBE CAMBIARSE CADA VEZ QUE SE CREA UNA NUEVA APLICACIÓN. EN ESTE CASO, ES EL PUBLISHER                       
     client1.on_publish = on_publish                          
     client1.connect(broker,port)  
     message =json.dumps({"Act1":act1})
@@ -47,7 +47,7 @@ if st.button('OFF'):
     client1.on_publish = on_publish                          
     client1.connect(broker,port)  
     message =json.dumps({"Act1":act1})
-    ret= client1.publish("OFF_ON", message)
+    ret= client1.publish("OFF_ON", message)        #AL SER EL TÓPICO, TAMBIÉN DEBE CAMBIARSE SU NOMBRE (EN TODAS LAS INSTANCIAS PRESENTES); DEBE SER IGUAL AL QUE TIENE EL SUBSCRIBER
   
     
 else:
@@ -61,7 +61,7 @@ if st.button('Enviar valor analógico'):
     client1.on_publish = on_publish                          
     client1.connect(broker,port)   
     message =json.dumps({"Analog": float(values)})
-    ret= client1.publish("CHANGE_ANGLE", message)
+    ret= client1.publish("CHANGE_ANGLE", message)    #AL IGUAL QUE EL OTRO TÓPICO, TAMBIÉN TIENE QUE SER CAMBIADO; DEBE SER IGUAL AL QUE TIENE EL SUBSCRIBER
     
  
 else:
