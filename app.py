@@ -3,9 +3,6 @@ import streamlit as st
 import json
 import matplotlib.pyplot as plt
 import numpy as np
-from gtts import gTTS
-import os
-import time
 
 # Variables para el control del ángulo
 values = 0.0
@@ -36,13 +33,6 @@ st.title("Controla tu servo con esta aplicación")
 values = st.slider('Selecciona el ángulo de giro de su servo', 0.0, 180.0, 90.0)
 st.write('Ángulo seleccionado:', values)
 
-# Función para reproducir texto a voz
-def speak_angle(angle):
-    tts = gTTS(text=f"El ángulo enviado fue {angle}", lang='es')
-    tts.save("angle.mp3")
-    os.system("start angle.mp3")  # Cambia "start" por "afplay" si usas Mac, o "xdg-open" en Linux
-    time.sleep(1)  # Esperar a que el audio se reproduzca
-
 # Botón para enviar el valor al servo
 if st.button('Enviar valor al servo'):
     client1 = paho.Client("MOTOR_WEB_APP")
@@ -51,13 +41,15 @@ if st.button('Enviar valor al servo'):
     message = json.dumps({"Analog": float(values)})
     client1.publish("CHANGE_ANGLE", message)
     st.write(f"Ángulo {values} enviado al servo.")
-    speak_angle(values)  # Llama a la función de Text-to-Speech
 
 # Actualización automática del gráfico cuando cambia el slider
 current_angle = values  # Actualiza el ángulo actual
 
 # Dibujar el gráfico que representa el ángulo
 fig, ax = plt.subplots(figsize=(3, 3))  # Tamaño más pequeño
+
+# Título de la gráfica
+ax.set_title("Representación gráfica del movimiento")
 
 # Dibujar la línea horizontal (amarilla)
 ax.plot([-1, 1], [0, 0], color='black', lw=6)
@@ -68,9 +60,6 @@ x = np.sin(angle_rad)  # Coordenada x
 y = np.cos(angle_rad)  # Coordenada y
 
 ax.plot([0, x], [0, y], 'r-', lw=4)
-
-# Título de la gráfica
-ax.set_title("Representación gráfica del movimiento", fontsize=12)
 
 # Configuración de los ejes
 ax.set_xlim(-1.5, 1.5)
