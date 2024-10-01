@@ -56,16 +56,7 @@ angle_rad = np.deg2rad(current_angle)
 x = np.sin(angle_rad)  # Coordenada x
 y = np.cos(angle_rad)  # Coordenada y
 
-# Dibujar la línea que representa el ángulo (cambiando los colores)
-if current_angle == 0:
-    ax.plot([0, 0], [0, 1], color='red', lw=6)  # Línea roja (0 grados)
-elif current_angle == 90:
-    ax.plot([0, 1], [0, 0], color='pink', lw=6)  # Línea rosada (90 grados)
-elif current_angle == 180:
-    ax.plot([0, 0], [0, -1], color='lime', lw=6)  # Línea verde (180 grados)
-else:
-    # Dibujar la línea que representa otros ángulos
-    ax.plot([0, x], [0, y], 'r-', lw=4)
+ax.plot([0, x], [0, y], 'r-', lw=4)
 
 # Configuración de los ejes
 ax.set_xlim(-1.5, 1.5)
