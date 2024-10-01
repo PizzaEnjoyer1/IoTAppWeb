@@ -57,26 +57,22 @@ if st.button('Enviar valor de ángulo al servo'):
     st.write(f"Ángulo actual del servo: {current_angle}°")
 
     # Visualizar el ángulo usando Matplotlib con un tamaño más pequeño
-    fig, ax = plt.subplots(figsize=(3, 3))  # Tamaño más pequeño
+    fig, ax = plt.subplots(figsize=(1, 1))  # Tamaño más pequeño
 
     # Dibujar la línea horizontal
     ax.plot([-1, 1], [0, 0], 'k-', lw=2)
 
     # Calcular la posición final de la línea basada en el ángulo actual
     if current_angle <= 90:
-        # Invertir el comportamiento para ángulos menores o iguales a 90 (debajo de la línea horizontal)
+        # Para ángulos menores o iguales a 90, la línea apunta hacia abajo
         angle_rad = np.deg2rad(90 - current_angle)
+        x = np.cos(angle_rad)  # Coordenada x
+        y = -np.sin(angle_rad)  # Coordenada y (invertida)
     else:
-        # Invertir el comportamiento para ángulos mayores a 90 (arriba de la línea horizontal)
-        angle_rad = np.deg2rad(90 - current_angle)
-
-    # Coordenadas de la línea
-    x = np.cos(angle_rad)  # Coordenada x
-    y = np.sin(angle_rad)  # Coordenada y
-
-    # Invertir la dirección del eje y para ángulos mayores a 90 (arriba de la línea horizontal)
-    if current_angle > 90:
-        y = -y
+        # Para ángulos mayores a 90, la línea apunta hacia arriba
+        angle_rad = np.deg2rad(current_angle - 90)
+        x = np.cos(angle_rad)  # Coordenada x
+        y = np.sin(angle_rad)  # Coordenada y (normal)
 
     # Dibujar la línea que representa el ángulo
     ax.plot([0, x], [0, y], 'r-', lw=4)
