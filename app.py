@@ -60,7 +60,7 @@ if st.button('Enviar valor de ángulo al servo'):
         <div style="position: relative; width: 200px; height: 200px;">
             <div style="position: absolute; width: 100%; height: 100%; border: 2px solid black; border-radius: 50%;"></div>
             <div style="position: absolute; width: 2px; height: 90px; background: red; 
-                transform-origin: bottom center; 
+                transform-origin: bottom; 
                 transform: rotate({current_angle}deg); 
                 bottom: 50%; left: 50%; margin-left: -1px; margin-bottom: -90px;"></div>
         </div>
