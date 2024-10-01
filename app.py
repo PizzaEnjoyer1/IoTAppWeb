@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from gtts import gTTS
 import os
+import tempfile
 
 # Variables para el control del ángulo
 values = 0.0
@@ -46,28 +47,12 @@ if st.button('Enviar valor al servo'):
     # Crear el mensaje de audio
     audio_message = f"El ángulo enviado fue {values:.2f}"
     
-    # Generar el audio y guardarlo como un archivo temporal
+    # Generar el audio y guardarlo en un archivo temporal
     tts = gTTS(text=audio_message, lang='es')
-    audio_file_path = "temp_audio.mp3"
-    tts.save(audio_file_path)
-
-    # Integrar el audio en un reproductor HTML y reproducirlo
-    audio_html = f"""
-    <audio autoplay>
-        <source src="{audio_file_path}" type="audio/mp3">
-    </audio>
-    <script>
-        setTimeout(function() {{
-            var audio = document.querySelector('audio');
-            audio.pause();
-            audio.currentTime = 0;
-        }}, 5000);  // Para detener el audio después de 5 segundos
-    </script>
-    """
+    with tempfile.NamedTemporaryFile(delete=True) as tmp_file:
+        tts.save(f"{tmp_file.name}.mp3")
+        st.audio(f"{tmp_file.name}.mp3")
     
-    # Reproducir el audio sin controles
-    st.components.v1.html(audio_html, height=0)
-
     st.write(f"Ángulo {values} enviado al servo.")
 
 # Actualización automática del gráfico cuando cambia el slider
@@ -100,7 +85,3 @@ ax.set_yticks([])
 
 # Mostrar el gráfico en Streamlit
 st.pyplot(fig)
-
-# Limpiar el archivo de audio temporal
-if os.path.exists(audio_file_path):
-    os.remove(audio_file_path)
