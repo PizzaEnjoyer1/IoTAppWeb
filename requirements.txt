@@ -1,5 +1,5 @@
 streamlit
-gTTS
+gTTS==2.2.2
 playsound
 paho-mqtt== 1.6.1
 matplotlib
