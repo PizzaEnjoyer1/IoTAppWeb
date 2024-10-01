@@ -54,5 +54,23 @@ if st.button('Enviar valor de ángulo al servo'):
     # Mostrar el ángulo actual
     st.write(f"Ángulo actual del servo: {current_angle}°")
 
+    # Generar HTML para la nueva visualización de la aguja
+    st.markdown(
+        f"""
+        <div style="position: relative; width: 400px; height: 200px;">
+            <!-- Línea horizontal -->
+            <div style="position: absolute; width: 100%; height: 2px; background: black; top: 50%;"></div>
+
+            <!-- Línea perpendicular giratoria -->
+            <div style="position: absolute; width: 2px; height: 100px; background: red;
+                transform-origin: bottom center; 
+                transform: rotate({-90 + current_angle}deg);  /* Ajusta la rotación */
+                top: 50%; left: 50%; margin-left: -1px;">
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 else:
     st.write('')
+
