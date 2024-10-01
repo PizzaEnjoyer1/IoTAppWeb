@@ -11,7 +11,7 @@ current_angle = 0.0  # Variable para almacenar el ángulo actual
 
 # Función MQTT para publicación
 def on_publish(client, userdata, result):
-    print("el dato ha sido publicado \n")
+    print("El dato ha sido publicado \n")
     pass
 
 # Función MQTT para recibir mensajes
@@ -51,17 +51,10 @@ fig, ax = plt.subplots(figsize=(3, 3))  # Tamaño más pequeño
 # Dibujar la línea horizontal (amarilla)
 ax.plot([-1, 1], [0, 0], color='yellow', lw=6)
 
-# Calcular la posición final de la línea basada en el ángulo actual
-if current_angle <= 90:
-    # Para ángulos menores o iguales a 90, la línea apunta hacia arriba o a la derecha
-    angle_rad = np.deg2rad(90 - current_angle)
-    x = np.cos(angle_rad)  # Coordenada x
-    y = np.sin(angle_rad)  # Coordenada y
-else:
-    # Para ángulos mayores a 90, la línea apunta hacia abajo
-    angle_rad = np.deg2rad(current_angle - 90)
-    x = np.cos(angle_rad)  # Coordenada x
-    y = -np.sin(angle_rad)  # Coordenada y (invertida)
+# Invertir la lógica del ángulo para que 0 grados apunte hacia arriba
+angle_rad = np.deg2rad(current_angle)
+x = np.sin(angle_rad)  # Coordenada x
+y = np.cos(angle_rad)  # Coordenada y
 
 # Dibujar la línea que representa el ángulo (cambiando los colores)
 if current_angle == 0:
