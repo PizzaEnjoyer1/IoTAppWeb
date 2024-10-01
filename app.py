@@ -4,13 +4,7 @@ import json
 import matplotlib.pyplot as plt
 import numpy as np
 from gtts import gTTS
-import os
 import tempfile
-
-# Variables para el control del ángulo
-values = 0.0
-act1 = "OFF"
-current_angle = 0.0  # Variable para almacenar el ángulo actual
 
 # Función MQTT para publicación
 def on_publish(client, userdata, result):
@@ -48,11 +42,14 @@ if st.button('Enviar valor al servo'):
     audio_message = f"El ángulo enviado fue {values:.2f}"
     
     # Generar el audio y guardarlo en un archivo temporal
-    tts = gTTS(text=audio_message, lang='es')
-    with tempfile.NamedTemporaryFile(delete=True) as tmp_file:
-        tts.save(f"{tmp_file.name}.mp3")
-        st.audio(f"{tmp_file.name}.mp3")
-    
+    with tempfile.NamedTemporaryFile(delete=False) as tmp_file:
+        tts = gTTS(text=audio_message, lang='es')
+        audio_file_path = f"{tmp_file.name}.mp3"
+        tts.save(audio_file_path)
+        
+    # Reproducir el audio automáticamente
+    st.audio(audio_file_path, format="audio/mp3")
+
     st.write(f"Ángulo {values} enviado al servo.")
 
 # Actualización automática del gráfico cuando cambia el slider
