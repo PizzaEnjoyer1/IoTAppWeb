@@ -25,9 +25,9 @@ client1.on_message = on_message
 
 
 
-st.title("MQTT Control")
+st.title("Controla tu motor con esta aplicación")
 
-if st.button('ON'):
+if st.button('Encender el motor'):
     act1="ON"
     client1= paho.Client("MOTOR_WEB_APP")           #CAMBIO NECESARIO                      
     client1.on_publish = on_publish                          
@@ -41,7 +41,7 @@ if st.button('ON'):
 else:
     st.write('')
 
-if st.button('OFF'):
+if st.button('Apagar el motor'):
     act1="OFF"
     client1= paho.Client("MOTOR_WEB_APP")         #CAMBIO NECESARIO                   
     client1.on_publish = on_publish                          
@@ -53,10 +53,10 @@ if st.button('OFF'):
 else:
     st.write('')
 
-values = st.slider('Selecciona el rango de valores',0.0, 100.0)
+values = st.slider('Selecciona el ángulo de giro de su servo',0.0, 180.0)
 st.write('Values:', values)
 
-if st.button('Enviar valor analógico'):
+if st.button('Enviar valor de ángulo al servo'):
     client1= paho.Client("MOTOR_WEB_APP")            #CAMBIO NECESARIO                
     client1.on_publish = on_publish                          
     client1.connect(broker,port)   
