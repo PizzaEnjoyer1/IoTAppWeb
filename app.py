@@ -33,15 +33,17 @@ st.title("Controla tu servo con esta aplicación")
 values = st.slider('Selecciona el ángulo de giro de su servo', 0.0, 180.0, 90.0)
 st.write('Ángulo seleccionado:', values)
 
+# Botón para enviar el valor al servo
+if st.button('Enviar valor al servo'):
+    client1 = paho.Client("MOTOR_WEB_APP")
+    client1.on_publish = on_publish
+    client1.connect(broker, port)
+    message = json.dumps({"Analog": float(values)})
+    client1.publish("CHANGE_ANGLE", message)
+    st.write(f"Ángulo {values} enviado al servo.")
+
 # Actualización automática del gráfico cuando cambia el slider
 current_angle = values  # Actualiza el ángulo actual
-
-# Publicar el valor automáticamente cuando el ángulo cambia
-client1 = paho.Client("MOTOR_WEB_APP")
-client1.on_publish = on_publish
-client1.connect(broker, port)
-message = json.dumps({"Analog": float(current_angle)})
-client1.publish("CHANGE_ANGLE", message)
 
 # Dibujar el gráfico que representa el ángulo
 fig, ax = plt.subplots(figsize=(3, 3))  # Tamaño más pequeño
@@ -51,15 +53,15 @@ ax.plot([-1, 1], [0, 0], color='yellow', lw=6)
 
 # Calcular la posición final de la línea basada en el ángulo actual
 if current_angle <= 90:
-    # Para ángulos menores o iguales a 90, la línea apunta hacia abajo
+    # Para ángulos menores o iguales a 90, la línea apunta hacia arriba o a la derecha
     angle_rad = np.deg2rad(90 - current_angle)
     x = np.cos(angle_rad)  # Coordenada x
-    y = -np.sin(angle_rad)  # Coordenada y (invertida)
+    y = np.sin(angle_rad)  # Coordenada y
 else:
-    # Para ángulos mayores a 90, la línea apunta hacia arriba
+    # Para ángulos mayores a 90, la línea apunta hacia abajo
     angle_rad = np.deg2rad(current_angle - 90)
     x = np.cos(angle_rad)  # Coordenada x
-    y = np.sin(angle_rad)  # Coordenada y (normal)
+    y = -np.sin(angle_rad)  # Coordenada y (invertida)
 
 # Dibujar la línea que representa el ángulo (cambiando los colores)
 if current_angle == 0:
