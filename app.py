@@ -63,9 +63,20 @@ if st.button('Enviar valor de ángulo al servo'):
     ax.plot([-1, 1], [0, 0], 'k-', lw=2)
 
     # Calcular la posición final de la línea basada en el ángulo actual
-    angle_rad = np.deg2rad(current_angle - 90)  # Ajustar el ángulo para que 90° sea vertical
+    if current_angle <= 90:
+        # Invertir el comportamiento para ángulos menores o iguales a 90 (debajo de la línea horizontal)
+        angle_rad = np.deg2rad(90 - current_angle)
+    else:
+        # Invertir el comportamiento para ángulos mayores a 90 (arriba de la línea horizontal)
+        angle_rad = np.deg2rad(90 - current_angle)
+
+    # Coordenadas de la línea
     x = np.cos(angle_rad)  # Coordenada x
     y = np.sin(angle_rad)  # Coordenada y
+
+    # Invertir la dirección del eje y para ángulos mayores a 90 (arriba de la línea horizontal)
+    if current_angle > 90:
+        y = -y
 
     # Dibujar la línea que representa el ángulo
     ax.plot([0, x], [0, y], 'r-', lw=4)
