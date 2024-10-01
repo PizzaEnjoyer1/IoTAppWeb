@@ -58,6 +58,9 @@ y = np.cos(angle_rad)  # Coordenada y
 
 ax.plot([0, x], [0, y], 'r-', lw=4)
 
+# Título de la gráfica
+ax.set_title("Representación gráfica del movimiento", fontsize=12)
+
 # Configuración de los ejes
 ax.set_xlim(-1.5, 1.5)
 ax.set_ylim(-1.5, 1.5)
