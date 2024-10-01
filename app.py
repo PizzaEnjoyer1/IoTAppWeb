@@ -49,7 +49,7 @@ current_angle = values  # Actualiza el ángulo actual
 fig, ax = plt.subplots(figsize=(3, 3))  # Tamaño más pequeño
 
 # Dibujar la línea horizontal (amarilla)
-ax.plot([-1, 1], [0, 0], color='yellow', lw=6)
+ax.plot([-1, 1], [0, 0], color='black', lw=6)
 
 # Invertir la lógica del ángulo para que 0 grados apunte hacia arriba
 angle_rad = np.deg2rad(current_angle)
