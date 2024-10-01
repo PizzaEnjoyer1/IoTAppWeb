@@ -25,7 +25,7 @@ client1.on_message = on_message
 
 
 
-st.title("Controla tu motor con esta aplicación")
+st.title("Controla tu servo con esta aplicación")
 
 if st.button('Encender el motor'):
     act1="ON"
