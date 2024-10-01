@@ -3,6 +3,9 @@ import streamlit as st
 import json
 import matplotlib.pyplot as plt
 import numpy as np
+from gtts import gTTS
+import os
+import tempfile
 
 # Variables para el control del ángulo
 values = 0.0
@@ -40,6 +43,16 @@ if st.button('Enviar valor al servo'):
     client1.connect(broker, port)
     message = json.dumps({"Analog": float(values)})
     client1.publish("CHANGE_ANGLE", message)
+    
+    # Crear el mensaje de audio
+    audio_message = f"El ángulo enviado fue {values:.2f}"
+    
+    # Generar el audio y guardarlo en un archivo temporal
+    tts = gTTS(text=audio_message, lang='es')
+    with tempfile.NamedTemporaryFile(delete=True) as tmp_file:
+        tts.save(f"{tmp_file.name}.mp3")
+        st.audio(f"{tmp_file.name}.mp3")
+    
     st.write(f"Ángulo {values} enviado al servo.")
 
 # Actualización automática del gráfico cuando cambia el slider
