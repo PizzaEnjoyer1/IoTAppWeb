@@ -2,6 +2,8 @@ import paho.mqtt.client as paho
 import time
 import streamlit as st
 import json
+import matplotlib.pyplot as plt
+import numpy as np
 
 values = 0.0
 act1 = "OFF"
@@ -54,23 +56,31 @@ if st.button('Enviar valor de ángulo al servo'):
     # Mostrar el ángulo actual
     st.write(f"Ángulo actual del servo: {current_angle}°")
 
-    # Generar HTML para la nueva visualización de la aguja
-    st.markdown(
-        f"""
-        <div style="position: relative; width: 400px; height: 200px;">
-            <!-- Línea horizontal -->
-            <div style="position: absolute; width: 100%; height: 2px; background: black; top: 50%;"></div>
+    # Visualizar el ángulo usando Matplotlib
+    fig, ax = plt.subplots()
 
-            <!-- Línea perpendicular giratoria -->
-            <div style="position: absolute; width: 2px; height: 100px; background: red;
-                transform-origin: bottom center; 
-                transform: rotate({-90 + current_angle}deg);  /* Ajusta la rotación */
-                top: 50%; left: 50%; margin-left: -1px;">
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+    # Dibujar la línea horizontal
+    ax.plot([-1, 1], [0, 0], 'k-', lw=2)
+
+    # Calcular la posición final de la línea basada en el ángulo actual
+    angle_rad = np.deg2rad(current_angle - 90)  # Ajustar el ángulo para que 90° sea vertical
+    x = np.cos(angle_rad)  # Coordenada x
+    y = np.sin(angle_rad)  # Coordenada y
+
+    # Dibujar la línea que representa el ángulo
+    ax.plot([0, x], [0, y], 'r-', lw=4)
+
+    # Configuración de los ejes
+    ax.set_xlim(-1.5, 1.5)
+    ax.set_ylim(-1.5, 1.5)
+    ax.set_aspect('equal')
+
+    # Ocultar las etiquetas de los ejes
+    ax.set_xticks([])
+    ax.set_yticks([])
+
+    # Mostrar el gráfico en Streamlit
+    st.pyplot(fig)
+
 else:
     st.write('')
-
