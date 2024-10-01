@@ -56,8 +56,8 @@ if st.button('Enviar valor de ángulo al servo'):
     # Mostrar el ángulo actual
     st.write(f"Ángulo actual del servo: {current_angle}°")
 
-    # Visualizar el ángulo usando Matplotlib
-    fig, ax = plt.subplots()
+    # Visualizar el ángulo usando Matplotlib con un tamaño más pequeño
+    fig, ax = plt.subplots(figsize=(3, 3))  # Tamaño más pequeño
 
     # Dibujar la línea horizontal
     ax.plot([-1, 1], [0, 0], 'k-', lw=2)
