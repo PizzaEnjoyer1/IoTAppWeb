@@ -30,6 +30,9 @@ st.title("Controla tu servo con esta aplicación")
 values = st.slider('Selecciona el ángulo de giro de su servo', 0.0, 180.0, 90.0)
 st.write('Ángulo seleccionado:', values)
 
+# Variable para almacenar la ruta del audio
+audio_file_path = None
+
 # Botón para enviar el valor al servo
 if st.button('Enviar valor al servo'):
     client1 = paho.Client("MOTOR_WEB_APP")
@@ -46,9 +49,14 @@ if st.button('Enviar valor al servo'):
         tts = gTTS(text=audio_message, lang='es')
         audio_file_path = f"{tmp_file.name}.mp3"
         tts.save(audio_file_path)
-        
-    # Reproducir el audio automáticamente
-    st.audio(audio_file_path, format="audio/mp3")
+
+    # Mostrar el audio como un objeto HTML para reproducir automáticamente
+    st.markdown(f"""
+        <audio autoplay>
+            <source src="file://{audio_file_path}" type="audio/mpeg">
+            Your browser does not support the audio tag.
+        </audio>
+    """, unsafe_allow_html=True)
 
     st.write(f"Ángulo {values} enviado al servo.")
 
