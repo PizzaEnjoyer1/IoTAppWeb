@@ -54,9 +54,16 @@ if st.button('Enviar valor al servo'):
     tts.save(audio_buffer)
     audio_buffer.seek(0)  # Rewind the buffer to the beginning
     
-    # Reproducir el audio
-    st.audio(audio_buffer, format='audio/mp3')
+    # Integrar el audio en un reproductor HTML
+    audio_html = f"""
+    <audio autoplay>
+        <source src="data:audio/mp3;base64,{audio_buffer.getvalue().decode('latin1')}" type="audio/mp3">
+    </audio>
+    """
     
+    # Reproducir el audio sin controles
+    st.components.v1.html(audio_html, height=0)
+
     st.write(f"Ángulo {values} enviado al servo.")
 
 # Actualización automática del gráfico cuando cambia el slider
