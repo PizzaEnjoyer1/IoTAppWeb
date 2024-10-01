@@ -1,4 +1,5 @@
 streamlit
+gTTS==2.2.2
 paho-mqtt== 1.6.1
 matplotlib
 numpy
