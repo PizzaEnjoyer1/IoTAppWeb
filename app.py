@@ -4,8 +4,7 @@ import json
 import matplotlib.pyplot as plt
 import numpy as np
 from gtts import gTTS
-import os
-import tempfile
+import io
 
 # Variables para el control del ángulo
 values = 0.0
@@ -47,11 +46,16 @@ if st.button('Enviar valor al servo'):
     # Crear el mensaje de audio
     audio_message = f"El ángulo enviado fue {values:.2f}"
     
-    # Generar el audio y guardarlo en un archivo temporal
+    # Generar el audio en memoria
     tts = gTTS(text=audio_message, lang='es')
-    with tempfile.NamedTemporaryFile(delete=True) as tmp_file:
-        tts.save(f"{tmp_file.name}.mp3")
-        st.audio(f"{tmp_file.name}.mp3")
+    
+    # Guardar el audio en un objeto BytesIO
+    audio_buffer = io.BytesIO()
+    tts.save(audio_buffer)
+    audio_buffer.seek(0)  # Rewind the buffer to the beginning
+    
+    # Reproducir el audio
+    st.audio(audio_buffer, format='audio/mp3')
     
     st.write(f"Ángulo {values} enviado al servo.")
 
