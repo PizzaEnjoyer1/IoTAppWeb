@@ -2,8 +2,6 @@ import paho.mqtt.client as paho
 import time
 import streamlit as st
 import json
-import numpy as np
-import matplotlib.pyplot as plt
 
 values = 0.0
 act1 = "OFF"
@@ -56,24 +54,18 @@ if st.button('Enviar valor de ángulo al servo'):
     # Mostrar el ángulo actual
     st.write(f"Ángulo actual del servo: {current_angle}°")
 
-    # Crear el gráfico de la aguja
-    fig, ax = plt.subplots()
-    ax.set_xlim(-1.5, 1.5)
-    ax.set_ylim(-1.5, 1.5)
-
-    # Dibuja la aguja
-    angle_rad = np.deg2rad(current_angle)  # Convierte a radianes
-    ax.plot([0, np.cos(angle_rad)], [0, np.sin(angle_rad)], lw=5, color='r')
-
-    # Dibuja un círculo para representar el eje
-    circle = plt.Circle((0, 0), 1, color='b', fill=False)
-    ax.add_artist(circle)
-
-    # Ajustar el aspecto
-    ax.set_aspect('equal', adjustable='box')
-    ax.axis('off')  # Quita los ejes
-
-    st.pyplot(fig)  # Muestra la figura en Streamlit
-
+    # Generar HTML para la aguja
+    st.markdown(
+        f"""
+        <div style="position: relative; width: 200px; height: 200px;">
+            <div style="position: absolute; width: 100%; height: 100%; border: 2px solid black; border-radius: 50%;"></div>
+            <div style="position: absolute; width: 2px; height: 90px; background: red; 
+                transform-origin: 50% 100%; 
+                transform: rotate({current_angle}deg); 
+                bottom: 50%; left: 50%; margin-left: -1px; margin-bottom: -90px;"></div>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 else:
     st.write('')
